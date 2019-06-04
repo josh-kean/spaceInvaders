@@ -6,7 +6,7 @@ class Player:
         self.width = 50
         self.height = 25
         self.position = position
-        self.colors = {'white': (255, 255, 255), 'black': (0,0,0)}
+        self.colors = {'white': (255, 255, 255), 'black': (0,0,0), 'green': (0,255,0)}
 
     def draw_player(self):
-        pygame.draw.rect(self.display, self.colors['black'], (self.position[0], self.position[1], self.width, self.height))
+        pygame.draw.rect(self.display, self.colors['green'], (self.position[0], self.position[1], self.width, self.height))

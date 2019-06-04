@@ -5,7 +5,7 @@ from player import Player
 
 pygame.init()
 
-width = 500
+width = 1000
 height = width
 display = pygame.display.set_mode((width, height))
 
@@ -33,13 +33,14 @@ def move_invaders(invaders):
         return -50
 
 def move_player(event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                return -10
-            if event.key == pygame.K_RIGHT:
-                return 10
-        if event.type == pygame.KEYUP:
-            return 0
+    playerSpeed = 20
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_LEFT:
+            return -playerSpeed
+        if event.key == pygame.K_RIGHT:
+            return playerSpeed
+    if event.type == pygame.KEYUP:
+        return 0
 
 def space_invaders(display):
     # invaderOne = invaders(display)
@@ -50,7 +51,7 @@ def space_invaders(display):
     attacked = False
     event = pygame.event.poll()
     #sets the speed of the space invader
-    invaderSpeed = 5
+    invaderSpeed = 2
     moveInvaderX = invaderSpeed
     moveInvaderY = 0
 
@@ -60,9 +61,10 @@ def space_invaders(display):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-            movePlayer = move_player(event)
+            if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+                movePlayer = move_player(event)
 
-        display.fill(colors['white'])
+        display.fill(colors['black'])
         invaderPositionsX = [invader.position[0] for invader in invaders]
         invaderPositionsY = [invader.position[1] for invader in invaders]
         if min(invaderPositionsX) == 0:
@@ -80,9 +82,10 @@ def space_invaders(display):
             invader.position[1] += moveInvaderY
             invader.draw_invader()
         moveInvaderY = 0
-        # movePlayer = 0
+        if player.position[0] < player.width or player.position[0] > width-player.width-10:
+            movePlayer = 0
         pygame.display.update()
-        clock.tick(10)
+        clock.tick(60)
 
 def start_screen():
     # display.fill(colors['white'])
