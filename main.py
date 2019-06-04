@@ -1,5 +1,6 @@
 import pygame
 from invaders import Invaders
+from player import Player
 
 
 pygame.init()
@@ -31,36 +32,55 @@ def move_invaders(invaders):
     if max(xPositions) == width:
         return -50
 
+def move_player(event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                return -10
+            if event.key == pygame.K_RIGHT:
+                return 10
+        if event.type == pygame.KEYUP:
+            return 0
 
 def space_invaders(display):
     # invaderOne = invaders(display)
     event = pygame.event.poll()
     invaders = create_invaders(display)
+    player = Player(display, [int(width/2), height-50])
     #attacked willl be true if the invader collides with the player
     attacked = False
     event = pygame.event.poll()
-    moveInvaderX = 50
+    #sets the speed of the space invader
+    invaderSpeed = 5
+    moveInvaderX = invaderSpeed
     moveInvaderY = 0
+
+    movePlayer = 0
     while attacked == False:
         for event in pygame.event.get():
-            pygame.quit()
-            quit()
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            movePlayer = move_player(event)
 
         display.fill(colors['white'])
         invaderPositionsX = [invader.position[0] for invader in invaders]
         invaderPositionsY = [invader.position[1] for invader in invaders]
         if min(invaderPositionsX) == 0:
-            moveInvaderX = 50
-            moveInvaderY = 50
-        if max(invaderPositionsX) >= width:
-            moveInvaderX = -50
-            moveInvaderY = 50
+            moveInvaderX = invaderSpeed
+            moveInvaderY = invaderSpeed
+        if max(invaderPositionsX) >= width-50:
+            moveInvaderX = -invaderSpeed
+            moveInvaderY = invaderSpeed
+
+        player.position[0] += movePlayer
+        player.draw_player()
 
         for invader in invaders:
             invader.position[0] += moveInvaderX
             invader.position[1] += moveInvaderY
             invader.draw_invader()
         moveInvaderY = 0
+        # movePlayer = 0
         pygame.display.update()
         clock.tick(10)
 
