@@ -2,7 +2,7 @@
 import pygame
 
 
-class invaders:
+class Invaders:
     def __init__(self,  display, position=[100,100]):
         self.display = display
         self.position = position
